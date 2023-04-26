@@ -6,7 +6,6 @@ const app = express()
 
 const spacificArticles = []
 
-const videoUrl = []
 
 const videos = [
     {
@@ -878,16 +877,16 @@ const videos = [
 ]
 
 app.get('/all',(req,res)=>{
-    res.json(videoUrl)
+    res.json(videos)
 })
-
-
 
 app.get('/all/:pageId',(req,res,)=>{
     const pageId = req.params.pageId
     const pageAddress = videos.filter(video => video.name == pageId)[0].address
+    // console.log(pageAddress)
     axios.get(pageAddress)
     .then(response => {
+        const videoUrl = []
         var html = response.data
         var $ = cheerio.load(html)
         $('.with-uploader', html).each(function(){
@@ -919,8 +918,9 @@ app.get('/all/:pageId/:videoId',(req,res,)=>{
     const pageAddress = videos.filter(video => video.name == pageId)[0].address
     axios.get(pageAddress)
     .then(response => {
-        var html = response.data
-        var $ = cheerio.load(html)
+        const videoUrl = []
+        const html = response.data
+        const $ = cheerio.load(html)
         $('.with-uploader', html).each(function(){
             const url = $(this).find('.thumb-inside').find('a').attr('href')
             const urlFull = url.split('/')
